@@ -67,7 +67,8 @@ def validate_environment() -> None:
         joined = ", ".join(missing)
         raise ConfigurationError(
             "Missing required environment variable(s): "
-            f"{joined}. Create a .env file from .env.example and set all keys."
+            f"{joined}. Set them in a local .env file, or in Streamlit Cloud "
+            "App settings → Secrets (see .streamlit/secrets.toml.example)."
         )
 
 

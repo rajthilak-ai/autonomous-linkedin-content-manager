@@ -36,6 +36,26 @@ from linkedin_content_manager import (
 
 load_dotenv()
 
+
+def apply_streamlit_secrets() -> None:
+    """Copy Streamlit secrets into environment variables for CrewAI/Groq."""
+    try:
+        for key in st.secrets:
+            value = st.secrets[key]
+            if isinstance(value, dict):
+                for nested_key, nested_value in value.items():
+                    if not os.getenv(str(nested_key)):
+                        os.environ[str(nested_key)] = str(nested_value)
+            elif not os.getenv(str(key)):
+                os.environ[str(key)] = str(value)
+    except FileNotFoundError:
+        pass
+    except Exception:
+        pass
+
+
+apply_streamlit_secrets()
+
 STAGE_DEFS = [
     {"key": "research", "label": "Research", "icon": "🔍", "agent": "Trend Researcher"},
     {"key": "writing", "label": "Writing", "icon": "✍️", "agent": "Content Writer"},
