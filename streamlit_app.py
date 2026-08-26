@@ -49,12 +49,11 @@ from typing import Optional
 from crewai import Crew, Process
 from dotenv import load_dotenv
 
+from app_config import ConfigurationError, validate_environment
 from linkedin_content_manager import (
-    ConfigurationError,
     build_llm,
     create_agents,
     create_tasks,
-    validate_environment,
 )
 
 load_dotenv()

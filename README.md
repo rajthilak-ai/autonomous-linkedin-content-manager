@@ -2,6 +2,32 @@
 
 Five CrewAI agents research, write, critique, optimize, and schedule a LinkedIn post. The Streamlit dashboard is the main interface.
 
+## CI/CD pipeline
+
+The repository uses a two-part pipeline:
+
+1. **Continuous integration (GitHub Actions):** every pull request and push to
+   `master` installs the Python 3.12 dependencies, checks dependency
+   compatibility and Python syntax, runs automated tests, and confirms that the
+   Streamlit server starts successfully.
+2. **Continuous deployment (Streamlit Community Cloud):** after a change is
+   merged or pushed to `master`, Streamlit detects the GitHub update and
+   automatically rebuilds the deployed app.
+
+The CI workflow does not use `OPENAI_API_KEY` or `SERPER_API_KEY`, so automated
+checks cannot consume API quota or generate content. Keep production keys only
+in Streamlit Community Cloud **Secrets**, never in the repository or workflow.
+
+You can also run the same core checks locally:
+
+```bash
+python -m pip install -r requirements.txt
+python -m pip install pytest
+python -m pip check
+python -m compileall -q app_config.py linkedin_content_manager.py streamlit_app.py tests
+python -m pytest -q
+```
+
 ## Deploy from GitHub (Streamlit Community Cloud)
 
 This app cannot run on GitHub Pages. Deploy it from this repo with Streamlit Community Cloud:
