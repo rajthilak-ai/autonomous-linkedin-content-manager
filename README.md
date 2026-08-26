@@ -14,14 +14,17 @@ This app cannot run on GitHub Pages. Deploy it from this repo with Streamlit Com
    - Repository: `rajthilak-ai/autonomous-linkedin-content-manager`
    - Branch: `master`
    - Main file: `streamlit_app.py`
-4. Open **Advanced settings** → **Secrets** and paste:
+4. Open **Advanced settings** and set **Python version to 3.12** (required — 3.13/3.14 breaks CrewAI).
+5. In **Advanced settings** → **Secrets**, paste:
 
 ```toml
 OPENAI_API_KEY = "your_groq_api_key_here"
 SERPER_API_KEY = "your_serper_api_key_here"
 ```
 
-5. Click **Deploy**. Future pushes to `master` automatically rebuild the app.
+6. Click **Deploy**. Future pushes to `master` automatically rebuild the app.
+
+If the app was already deployed on Python 3.14, reboot will not fix it. Delete the app and redeploy with Python 3.12 selected. Streamlit Cloud ignores `.python-version` / `runtime.txt`.
 
 Keep the repo **public** for the free Streamlit Cloud plan, or use a Streamlit Cloud plan that supports private repos.
 

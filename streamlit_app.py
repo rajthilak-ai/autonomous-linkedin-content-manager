@@ -15,6 +15,30 @@ This wraps the existing 5-agent sequential pipeline defined in
 
 from __future__ import annotations
 
+import sys
+
+import streamlit as st
+
+st.set_page_config(
+    page_title="LinkedIn Content Manager",
+    page_icon="🚀",
+    layout="wide",
+    initial_sidebar_state="expanded",
+)
+
+# CrewAI/ChromaDB currently crash on Python 3.14 (pydantic v1 ConfigError).
+# Streamlit Cloud ignores .python-version; the Python version must be 3.12
+# in App settings → Advanced settings. Changing it requires delete + redeploy.
+if sys.version_info >= (3, 14):
+    st.error(
+        f"This Cloud runtime is Python {sys.version.split()[0]}, which CrewAI "
+        "does not support.\n\n"
+        "Fix: Streamlit Cloud → **Manage app** → delete this app → **Deploy** again, "
+        "then in **Advanced settings** set **Python version to 3.12**. "
+        "Reboot alone will not change Python."
+    )
+    st.stop()
+
 import contextlib
 import io
 import os
@@ -22,7 +46,6 @@ import time
 from threading import Thread
 from typing import Optional
 
-import streamlit as st
 from crewai import Crew, Process
 from dotenv import load_dotenv
 
@@ -255,12 +278,6 @@ def run_pipeline(topic: str, shared: dict) -> None:
 # --------------------------------------------------------------------------- #
 # Page setup
 # --------------------------------------------------------------------------- #
-st.set_page_config(
-    page_title="LinkedIn Content Manager",
-    page_icon="🚀",
-    layout="wide",
-    initial_sidebar_state="expanded",
-)
 inject_css()
 
 for key, default in {
