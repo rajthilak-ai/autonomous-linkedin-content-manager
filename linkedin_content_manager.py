@@ -18,10 +18,7 @@ from dotenv import load_dotenv
 
 from crewai import Agent, Crew, LLM, Process, Task
 from crewai_tools import ScrapeWebsiteTool, SerperDevTool
-
-
-class ConfigurationError(RuntimeError):
-    """Raised when required configuration is missing."""
+from app_config import ConfigurationError, validate_environment
 
 
 @dataclass(frozen=True)
@@ -51,25 +48,6 @@ def print_sub_banner(title: str) -> None:
     """Print a smaller subsection banner."""
     line = "-" * 90
     print(f"\n{line}\n{title}\n{line}")
-
-
-def validate_environment() -> None:
-    """
-    Ensure all required environment variables are available before running.
-    """
-    missing = []
-    if not os.getenv("OPENAI_API_KEY"):
-        missing.append("OPENAI_API_KEY")
-    if not os.getenv("SERPER_API_KEY"):
-        missing.append("SERPER_API_KEY")
-
-    if missing:
-        joined = ", ".join(missing)
-        raise ConfigurationError(
-            "Missing required environment variable(s): "
-            f"{joined}. Set them in a local .env file, or in Streamlit Cloud "
-            "App settings → Secrets (see .streamlit/secrets.toml.example)."
-        )
 
 
 def build_llm() -> LLM:
